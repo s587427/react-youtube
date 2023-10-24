@@ -1,22 +1,31 @@
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2"
 import { Button } from "./Button"
 import { useEffect, useRef, useState } from "react"
+import { windowSizeProps } from "../hooks/useResize"
 
 type CategoryPillsProps = {
     categories: string[]
     selectedCategory: string
     onSelect: (category: string) => void
+    windowSize: windowSizeProps
 }
 
 const TRANSALTE_X = 200
 
-export function CategoryPills({ categories, selectedCategory, onSelect }: CategoryPillsProps) {
+export function CategoryPills({
+    windowSize,
+    categories,
+    selectedCategory,
+    onSelect,
+}: CategoryPillsProps) {
     const [translateX, setTranslateX] = useState(0)
     const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false)
     const [isRightArrowVisible, setIsRightArrowVisible] = useState(true)
     const pillsContainerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
+        console.log({ translateX })
+
         if (pillsContainerRef.current == null) return
 
         setIsLeftArrowVisible(translateX < 0)
@@ -25,9 +34,7 @@ export function CategoryPills({ categories, selectedCategory, onSelect }: Catego
             Math.abs(translateX) + pillsContainerRef.current.clientWidth <
                 pillsContainerRef.current.scrollWidth
         )
-
-        console.log({ translateX })
-    }, [pillsContainerRef, translateX, categories])
+    }, [pillsContainerRef, translateX, categories, windowSize?.width])
 
     return (
         <div className="relative overflow-x-hidden" ref={pillsContainerRef}>
