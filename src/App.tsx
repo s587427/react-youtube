@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { CategoryPills } from "./components/CategoryPills"
 import { PageHeader } from "./layouts/PageHeader"
-import { categories, videos } from "./assets/home"
+import { categories, videos } from "./data/home"
 import { VideoGridItem } from "./components/VideoGridItem"
 
 export default function App() {
