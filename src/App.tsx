@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { CategoryPills } from "./components/CategoryPills"
 import { PageHeader } from "./layouts/PageHeader"
-import { categories, videos } from "./data/home"
+import { Sidebar } from "./layouts/SideBar"
 import { VideoGridItem } from "./components/VideoGridItem"
 import { useResize } from "./hooks/useResize"
+import { categories, videos } from "./data/home"
 
 export default function App() {
     const [selectedCategory, setSeletedCategory] = useState(categories[0])
@@ -13,8 +14,8 @@ export default function App() {
     return (
         <div className="max-h-screen flex flex-col">
             <PageHeader />
-            <div className="grid grid-cols-[auto,1fr] flex-grow overflow-auto">
-                <div>sidebar</div>
+            <div className="grid grid-cols-[auto,1fr] flex-grow overflow-auto relative">
+                <Sidebar />
                 {/* 類別 + 影片 */}
                 <div className="overflow-x-hidden px-8 pb-4">
                     <div className="sticky top-0 bg-white z-10 pb-4">
