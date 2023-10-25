@@ -74,8 +74,10 @@ export function Sidebar({ windowSize }: SidebarProps) {
 
             <aside
                 className={`${isLargeOpen ? "lg:flex" : "lg:hidden"}
-                ${isSamllOpen ? "flex z-[999] bg-white h-screen" : "hidden"}         
-                flex-col w-56 lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden gap-2 px-2 pb-4 z-20`}
+                ${
+                    isSamllOpen ? "flex z-[999] bg-white h-screen translate-x-0" : "opacity-0"
+                }         
+                flex-col w-56 lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden gap-2 px-2 pb-4 z-20 transition-all md:transition-none -translate-x-full lg:-translate-x-0 opacity-100`}
             >
                 <div className="lg:hidden pt-2 pb-4 px-2 sticky top-0 bg-white">
                     <PageHeaderFirstSection />
