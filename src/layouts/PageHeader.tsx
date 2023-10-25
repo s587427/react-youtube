@@ -1,5 +1,3 @@
-import Logo from "../assets/react.svg"
-
 import {
     HiArrowLeft,
     HiBars3,
@@ -11,24 +9,13 @@ import {
 } from "react-icons/hi2"
 import { Button } from "../components/Button"
 import { useState } from "react"
+import { SidebarContextType, useSiderbarContext } from "../contexts/SidebarProvider"
 
 export function PageHeader() {
     const [fullWidthSearch, setFullWidthSearch] = useState(false)
-
     return (
         <div className="flex gap-10 lg:gap-20 justify-between pt-2 mb-6 mx-4">
-            <div
-                className={`${
-                    fullWidthSearch ? "hidden" : "flex"
-                } gap-4 items-center flex-shrink-0`}
-            >
-                <Button variant="ghost" size="icon">
-                    <HiBars3 className="w-full h-full" />
-                </Button>
-                <a href="#">
-                    <img src={Logo}></img>
-                </a>
-            </div>
+            <PageHeaderFirstSection hidden={fullWidthSearch} />
             {/* md 斷點以上顯示否則隱藏 */}
             <form
                 className={`${
@@ -83,6 +70,28 @@ export function PageHeader() {
                     <HiOutlineUser className="w-full h-full" />
                 </Button>
             </div>
+        </div>
+    )
+}
+
+type PageHeaderFirstSectionProps = {
+    hidden?: boolean
+}
+
+export function PageHeaderFirstSection({ hidden = false }: PageHeaderFirstSectionProps) {
+    const { toggle } = useSiderbarContext() as SidebarContextType
+
+    return (
+        <div className={`${hidden ? "hidden" : "flex"} gap-4 items-center flex-shrink-0`}>
+            <Button variant="ghost" size="icon" onClick={toggle}>
+                <HiBars3 className="w-full h-full" />
+            </Button>
+            <a href="#">
+                <img
+                    className="h-6"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/YouTube_Logo_2017.svg/337px-YouTube_Logo_2017.svg.png"
+                ></img>
+            </a>
         </div>
     )
 }

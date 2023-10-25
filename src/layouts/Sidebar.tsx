@@ -1,4 +1,4 @@
-import React, { ElementType, ReactNode, useState } from "react"
+import React, { ElementType, ReactNode, useEffect, useState } from "react"
 import {
     HiOutlineBuildingLibrary,
     HiOutlineAtSymbol,
@@ -23,11 +23,34 @@ import {
 import { Button, buttonStyles } from "../components/Button"
 import { twMerge } from "tailwind-merge"
 import { playlists, subscriptions } from "../data/sidebar"
-export function Sidebar() {
+import { SidebarContextType, useSiderbarContext } from "../contexts/SidebarProvider"
+import { PageHeaderFirstSection } from "./PageHeader"
+import { windowSizeProps } from "../hooks/useResize"
+
+// TODO 放大的時候根據他的large open狀態來決定要選哪一個large版型, 到最小就一個版型
+
+export type SidebarProps = {
+    windowSize: windowSizeProps
+}
+
+export function Sidebar({ windowSize }: SidebarProps) {
+    const { isLargeOpen, isSamllOpen, setIsSamllOpen, onClose, isScreenSmall } =
+        useSiderbarContext() as SidebarContextType
+
+    useEffect(() => {
+        if (!isScreenSmall()) {
+            setIsSamllOpen(false)
+        }
+    }, [windowSize])
+
     return (
         <>
             {/*  小版 */}
-            <aside className="sticky top-0 overflow-y-auto scrollbar-hidden pb-4 flex flex-col ml-1 lg:hidden">
+            <aside
+                className={`sticky top-0 overflow-y-auto scrollbar-hidden pb-4 hidden md:flex flex-col ml-1 ${
+                    isLargeOpen ? "lg:hidden" : "lg:flex"
+                }`}
+            >
                 <SmallSidebarItem Icon={HiOutlineHome} title="Home" url="/home" />
                 <SmallSidebarItem Icon={HiOutlineFilm} title="Short" url="/shorts" />
                 <SmallSidebarItem
@@ -37,9 +60,27 @@ export function Sidebar() {
                 />
             </aside>
 
+            {/* 小型打開灰階背色 */}
+            {/* fixed根據瀏覽器定位,  (abs/fixed + inset-0小技巧可以做遮罩子填滿父) */}
+            {isSamllOpen && (
+                <div
+                    onClick={onClose}
+                    className="lg:hidden fixed inset-0 z-[999] opacity-50 bg-secondary-dark"
+                ></div>
+            )}
+
             {/* 大版 */}
             {/* postion lg以上stikey, 否則absoulte */}
-            <aside className="w-56 lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden flex flex-col gap-2 px-2 pb-4 z-20">
+
+            <aside
+                className={`${isLargeOpen ? "lg:flex" : "lg:hidden"}
+                ${isSamllOpen ? "flex z-[999] bg-white h-screen" : "hidden"}         
+                flex-col w-56 lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden gap-2 px-2 pb-4 z-20 ttt`}
+            >
+                <div className="lg:hidden pt-2 pb-4 px-2 sticky top-0 bg-white">
+                    <PageHeaderFirstSection />
+                </div>
+
                 <LargeSidebarSection>
                     <LargeSidebarItem
                         IconOrImageUrl={HiOutlineHome}
